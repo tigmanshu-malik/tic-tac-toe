@@ -8,7 +8,7 @@ const GameController = {
     player1: {
         name: 'player-1',
         symbol: 'x',
-        tag:  `<i class="fa-solid fa-xmark cross"></i>`
+        tag: `<i class="fa-solid fa-xmark cross"></i>`
     },
     
     player2: {
@@ -59,10 +59,8 @@ const GameController = {
             this.gameboard[row][col] = player.symbol;
             const container = document.getElementById(`${row}${col}`);
             container.innerHTML = player.tag;
-            
         } else {
             console.log("That place is taken or invalid! Try again");
-            return this.playRound(row, col, player); 
         }
     },
 
@@ -72,14 +70,46 @@ const GameController = {
         this.chance++;
 
         if (this.checkWinner(this.currentPlayer)) {
-            console.log(`${this.currentPlayer.name} wins !!`);
-            console.table(this.gameboard);
+            document.getElementById('winner-container').style.display = 'flex'
+            const container = document.getElementById('winner')
+            container.innerHTML = `${this.currentPlayer.name} Wins !!`
             return;
         }
 
         if (this.chance === 9) {
-            console.log("It's a draw");
+            document.getElementById('winner-container').style.display = 'flex'
+            const container = document.getElementById('winner')
+            container.innerHTML = `It's a draw`
+        }
+    },
+
+    enterName(event) {
+        event.preventDefault();
+        this.player1.name = document.getElementById('p1').value || 'player-1';
+        this.player2.name = document.getElementById('p2').value || 'player-2';
+        const container = document.getElementById('overlay-container');
+        container.style.display = 'none';
+    },
+
+    restart(){
+
+        GameController.gameboard = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', '']
+        ]
+
+        this.chance = 0
+
+        document.getElementById('winner-container').style.display = "none"
+
+        for(let i = 0; i < 3; i++){
+
+            for(let j = 0; j < 3; j++){
+
+                const container = document.getElementById(`${i}${j}`);
+                container.innerHTML = "";
+            }
         }
     }
 }
-
